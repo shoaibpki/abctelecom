@@ -1,3 +1,5 @@
+import { Service } from "./service";
+
 export interface User {
     id: number;
     userName: string;
@@ -5,7 +7,7 @@ export interface User {
     password: string;
     role: string;
     pinCode?: string;
-    services?: any[];
+    services?: Service[];
     complaints?: any[];
 
 }

@@ -1,0 +1,73 @@
+<div class="row mt-5"></div>
+<div class="row mt-3">
+    <div class="col-sm-4">
+        <div class="card mb-2">
+            <div class="card-header bg-dark text-white">
+                Customer Details
+            </div>
+            <div class="card-body bg-info">
+                <h5 class="card-title">{{user.userName}}</h5>
+                <div class="card-text">Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{user.email}}</div>
+                <div class="card-text">Mobile:&nbsp;{{user.mobile}}</div>
+                <div class="card-text">Pincode: {{user.pinCode}}</div>
+            </div>
+        </div>
+        <div class="card mb-2">
+            <div class="card-header bg-dark text-white">
+                Customer's Service(s)
+            </div>
+            <div class="card-body bg-info">
+                <h5 class="card-title" *ngFor="let service of user.services">{{service.name}}</h5>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                Customer's Complaint(s)
+            </div>
+            <div *ngFor="let complaint of user.complaints" >
+                <div class="card-body bg-info" *ngIf="complaint.status == 'RAISED'">
+                    {{complaint.referenceNo}}<span class="badge badge-pill badge-primary">{{complaint.status}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8 mt-3 mb-5">
+        <div class="card">
+            <form #complaintForm="ngForm" (ngSubmit)="onSubmit(complaintForm.value)">
+                <div class="form-group">
+                    <label for="complaint">Complaint:</label>
+                    <textarea rows="6"  id="complaint" class="form-control" name="complaint" ngModel></textarea>
+                </div>
+                <div class="form-check" *ngFor="let service of user.services">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input"  name="serviceId" [value]="service.serviceId" ngModel>{{service.name}}
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <input class="form-control" type="submit">
+                  </div>
+            </form>
+        </div>
+        <table class="table table-light">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Complaint</th>
+                    <th>Created Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let complaint of user.complaints">
+                    <td>{{complaint.complaint}}</td>
+                    <td>{{complaint.cdate | date: 'dd-MM-yyyy'}}</td>
+                    <td [ngClass]="{
+                        'bg-warning' : complaint.status === 'ON_GOING',
+                        'bg-info' : complaint.status === 'PENDING',
+                        'bg-success' : complaint.status === 'RESOVLED',
+                        'bg-danger' : complaint.status === 'ESCALATED'
+                        }">{{complaint.status}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

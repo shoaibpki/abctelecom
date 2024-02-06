@@ -38,14 +38,15 @@ export class UsermanageComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
-    this.uServices.getCustomServices()
-    .subscribe((data) => {
-      data.forEach((d) =>{
-        this.uServices.addService(d);
-        this.htmlServices.push(d)
-      })
-      this.addServiceInCheckBoxes()
-    });
+    this.htmlServices = this.uServices._service
+    // this.uServices.getCustomServices()
+    // .subscribe((data) => {
+    //   data.forEach((d) =>{
+    //     this.uServices.addService(d);
+    //     this.htmlServices.push(d)
+    //   })
+    //   this.addServiceInCheckBoxes()
+    // });
   }
   
   public get services() : FormArray {
@@ -74,6 +75,7 @@ export class UsermanageComponent implements OnInit {
     this.usersForm =  this.form.group({
       personalDetails: this.form.group({
         userName: this.form.control(null, Validators.required),
+        mobile: this.form.control(null),
         email: this.form.control(null, [Validators.required, Validators.email]),
         password: this.form.control(null, Validators.required),
         role: this.form.control(null),
@@ -90,11 +92,11 @@ export class UsermanageComponent implements OnInit {
       // adding services of customer
       this.addServiceToCustomer()
 
-      // this.userService.createUser(this.user)
-      // .subscribe((data) => {
-      //   // adding new user in user table
-      //   this.users.push({...this.user , id: data})
-      // });  
+      this.userService.createUser(this.user)
+      .subscribe((data) => {
+        // adding new user in user table
+        this.users.push({...this.user , id: data})
+      });  
     } else {
       let id = this.user.id;
       this.user = this.usersForm.value['personalDetails'];
@@ -118,9 +120,12 @@ export class UsermanageComponent implements OnInit {
         control.patchValue(false)
     })
     this.user = this.users.find((user) => user.id == id)!
+
+    // set values in html form field
     this.usersForm.controls['personalDetails'].setValue(
      {
       userName: this.user.userName,
+      mobile: this.user.mobile,
       email: this.user.email,
       password: this.user.password,
       role: this.user.role,

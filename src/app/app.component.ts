@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from './service/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from './interface/user';
+import { ServicesService } from './service/services.service';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +11,11 @@ import { User } from './interface/user';
 })
 export class AppComponent implements OnInit {
   title = 'abctelecom';
-  constructor(private userService: UserService){}
+  constructor(private userService: UserService, private services: ServicesService){}
   
   ngOnInit(): void {
+    this.services.getFullServices().subscribe((srv) => {
+      this.services._service = srv
+    })
   }
 }

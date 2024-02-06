@@ -7,13 +7,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminComponent } from './components/admin/admin.component';
 import { LoginComponent } from './components/login/login.component';
 import { UsermanageComponent } from './components/usermanage/usermanage.component';
+import { CustomerComponent } from './components/customer/customer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminComponent,
     LoginComponent,
-    UsermanageComponent
+    UsermanageComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,

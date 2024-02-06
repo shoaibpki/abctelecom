@@ -24,14 +24,37 @@ export class LoginComponent {
     this.userService.login(email, password)
     .subscribe({
       next: user => {
-        if (user.role === 'ADMIN'){
-          this.userService.setAdmin(user);
-          this.route.navigate(['admin']);
+        switch (user.role){
+          case 'ADMIN': {
+            this.userService.setAdmin(user);
+            this.route.navigate(['admin']);
+              break;
+          }
+          case 'CUSTOMER':{
+            this.userService.setAdmin(user);
+            this.route.navigate(['customer']);
+              break;  
+          }
+          case 'MANAGER':{
+            this.userService.setAdmin(user);
+            this.route.navigate(['admin']);
+              break;  
+          }
+          case 'ENGINEER':{
+            this.userService.setAdmin(user);
+            this.route.navigate(['admin']);
+              break;  
+          }
         }
         this.userService.isLogin = true; 
         this.errorMessage = '';
       },
-      error: err => { this.errorMessage = err['error'].message; }
+      error: err => { 
+        this.errorMessage = err['error'].message; 
+        // if (this.errorMessage = ''){
+        //   this.errorMessage = "Database not Started!"
+        // }
+      }
     });
   }
 

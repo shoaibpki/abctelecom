@@ -1,6 +1,6 @@
 <!-- User details form -->
 <div class="row">
-    <div class="col-4">
+    <div class="col-6">
         <div class="card mb-3">
             <div class="card-header bg-dark text-white">
                 User Details
@@ -8,17 +8,17 @@
             <div class="card-body">
                 <form [formGroup]="usersForm" (ngSubmit)="createUser()">
                     <div formGroupName = "personalDetails">
-                        <div class="form-group">
-                            <label for="userName">User Name:</label>
-                            <input id="userName" class="form-control" type="text" formControlName="userName">
+                        <div class="form-inline mb-2">
+                            <!-- <label class="sr-only" for="userName">UserName</label> -->
+                            <input id="userName" class="form-control mr-sm-2" type="text" formControlName="userName" placeholder="User Name">
+                            <!-- <label class="sr-only" for="mobile">Mobile</label> -->
+                            <input id="mobile" class="form-control mr-sm-2" type="number" formControlName="mobile" placeholder="Mobile">
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input id="email" class="form-control" type="email" formControlName="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">password:</label>
-                            <input id="password" class="form-control" type="password" formControlName="password">
+                        <div class="form-inline">
+                            <!-- <label for="email">Email:</label> -->
+                            <input id="email" class="form-control mr-sm-2" type="email" formControlName="email" placeholder="Email">
+                            <!-- <label for="password">password:</label> -->
+                            <input id="password" class="form-control mr-sm-2" type="password" formControlName="password" placeholder="Password">
                         </div>
                         <div class="form-group">
                             <label for="role">Role:</label>
@@ -50,7 +50,7 @@
         </div>
     </div>
     <!-- User table depends on user role -->
-    <div class="col-8">
+    <div class="col-6">
         <div class="card">
             <div class="card-header bg-dark text-white" *ngIf="role != ''">
                 {{ role + 's' | titlecase}}

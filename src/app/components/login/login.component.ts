@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ServicesService } from 'src/app/service/services.service';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -8,15 +9,25 @@ import { UserService } from 'src/app/service/user.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   errorMessage: string = '';
-
 
   constructor(
     private userService: UserService, 
-    private route: Router){}
+    private route: Router,
+    private services: ServicesService){}
 
   @ViewChild('loginForm') form!: NgForm;
+
+  ngOnInit(): void {
+    this.services.getFullServices().subscribe((srv) => {
+      srv.forEach((service) => this.services.setService(service))
+    })
+    this.userService.getHttpUsers()
+    .subscribe((users) => {
+      users.forEach((user) => this.userService.setUsers(user));
+    });
+  }
 
   onSubmit(){
     let email = this.form.value['email'];
@@ -37,7 +48,7 @@ export class LoginComponent {
           }
           case 'MANAGER':{
             this.userService.setAdmin(user);
-            this.route.navigate(['admin']);
+            this.route.navigate(['manager']);
               break;  
           }
           case 'ENGINEER':{

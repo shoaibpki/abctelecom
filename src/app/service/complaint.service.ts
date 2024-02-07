@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Complaint } from '../interface/complaint';
 import { Observable } from 'rxjs';
-import { User } from '../interface/user';
 
 @Injectable({
   providedIn: 'root'
@@ -14,5 +13,15 @@ export class ComplaintService {
 
   saveComplaint(uid: number, complaint: Complaint): Observable<Complaint>{
     return this.http.post<Complaint>(`${this._rootUrl}/${uid}/complaint`,complaint)
+  }
+
+  getAllComplaints(): Observable<Complaint[]>{
+    return this.http.get<Complaint[]>(`${this._rootUrl}/complaints`)
+  }
+
+  assignEngineerToComplaint(
+    complaintId: number, 
+    engineerId: number) : Observable<Complaint>{
+      return this.http.put<Complaint>(`${this._rootUrl}/complaint/${complaintId}/engineer/${engineerId}`, null)
   }
 }

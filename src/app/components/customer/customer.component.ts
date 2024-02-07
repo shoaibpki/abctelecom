@@ -31,7 +31,7 @@ export class CustomerComponent implements OnInit {
 
   onSubmit(fields: any){
     let id: number = fields['serviceId']
-    this.cService = this.services._service.find((service) => service.serviceId == id)!
+    this.cService = this.services.getServices().find((service) => service.serviceId == id)!
     let complaint: Complaint = {
       complaint: fields['complaint'],
       status: 'RAISED',

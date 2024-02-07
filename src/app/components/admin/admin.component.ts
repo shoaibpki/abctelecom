@@ -18,14 +18,11 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.userService.isLogin);
     this.admin = this.userService.getAdmin();
-    this.userService.getHttpUsers()
-    .subscribe((users) => {
-      users.forEach((user) => this.userService.setUsers(user));
-    });
   }
   setRoleCustomer(){
     this.role = 'CUSTOMER';
     this.filterUsers = this.userService.getUsers().filter((user) => user.role == this.role)
+    console.log(this.filterUsers)
   }
   setRoleManager(){
     this.role = 'MANAGER';

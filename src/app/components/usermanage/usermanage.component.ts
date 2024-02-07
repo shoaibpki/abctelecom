@@ -38,15 +38,9 @@ export class UsermanageComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
-    this.htmlServices = this.uServices._service
-    // this.uServices.getCustomServices()
-    // .subscribe((data) => {
-    //   data.forEach((d) =>{
-    //     this.uServices.addService(d);
-    //     this.htmlServices.push(d)
-    //   })
-    //   this.addServiceInCheckBoxes()
-    // });
+    this.htmlServices = this.uServices.getServices();
+    this.addServiceInCheckBoxes();
+    console.log(this.htmlServices)
   }
   
   public get services() : FormArray {

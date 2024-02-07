@@ -14,8 +14,6 @@ export class AppComponent implements OnInit {
   constructor(private userService: UserService, private services: ServicesService){}
   
   ngOnInit(): void {
-    this.services.getFullServices().subscribe((srv) => {
-      this.services._service = srv
-    })
+   
   }
 }

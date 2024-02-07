@@ -1,0 +1,110 @@
+<div class="container-fluid mb-2 shadow">
+    <div class="row mt-5 mb-5 shadow">
+        <div class="col-sm-5 mt-3">
+            <div class="card h-25">
+                <div class="card-header">
+                    All Complaints Table...
+                </div>
+                <div class="card-body">
+                    <table class="table table-light table-sm table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Complaints</th>
+                                <th>C/S</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let complaint of allComplaints index as i">
+                                <td>{{i+1}}</td>
+                                <td>{{complaint.complaint}}</td>
+                                <td>{{complaint.service.name}}</td>
+                                <td>{{complaint.status}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card h-25 mt-2">
+                <div class="card-header">
+                    Raised Complaints Table...
+                </div>
+                <div class="card-body">
+                    <table class="table table-light table-sm">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Complaints</th>
+                                <th>C/S</th>
+                                <th>PinCode</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let complaint of raisedComplaint index as i">
+                                <td>{{i+1}}</td>
+                                <td>{{complaint.complaint}}</td>
+                                <td>{{complaint.service.name}}</td>
+                                <td>{{complaint.customer?.pinCode}}</td>
+                                <td><button class="btn btn-info" type="button" (click)="selectEngineer(complaint)">Select Engineer</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card h-25 mt-2">
+                <div class="card-header">
+                    ON_Going Complaints Table...
+                </div>
+                <div class="card-body">
+                    <table class="table table-light table-sm">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Complaints</th>
+                                <th>C/S</th>
+                                <th>PinCode</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr [ngClass]="i%2 === 0?'table-primary':''" *ngFor="let complaint of ongoingComplaint index as i">
+                                <td>{{i+1}}</td>
+                                <td>{{complaint.complaint}}</td>
+                                <td>{{complaint.service.name}}</td>
+                                <td>{{complaint.customer?.pinCode}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7 mt-3">
+            <div class="card" *ngIf="showEngineer">
+                <div class="card-header">
+                    Engineers
+                </div>
+                <div class="card-body">
+                    <table class="table table-light">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>PinCode</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let engineer of engineers index as i">
+                                <td>{{i + 1}}</td>
+                                <td>{{engineer.userName}}</td>
+                                <td>{{engineer.pinCode}}</td>
+                                <td><button class="btn btn-success" type="button"(click)="assignJob(engineer.id)">Assign Job</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

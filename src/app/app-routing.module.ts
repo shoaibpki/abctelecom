@@ -6,10 +6,12 @@ import { UsermanageComponent } from './components/usermanage/usermanage.componen
 import { UserresolveGuard } from './guard/userresolve.guard';
 import { CustomerComponent } from './components/customer/customer.component';
 import { AppComponent } from './app.component';
+import { ManagerComponent } from './components/manager/manager.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'customer', component: CustomerComponent},
+  {path: 'manager', component: ManagerComponent},
   {path: 'admin', component: AdminComponent, canActivate: [UserresolveGuard], children:[
     {path: 'user/manage', component: UsermanageComponent},
   ]},

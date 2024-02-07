@@ -7,7 +7,7 @@ export interface Complaint {
     service: Service;
     complaintId?: number;
     referenceNo?: string;
-    user?: User;
+    customer?: User;
     engineerId?: number;
     cdate?: Date; // complaint generated date
     jdate?: Date; // complaint assigning to engineer date

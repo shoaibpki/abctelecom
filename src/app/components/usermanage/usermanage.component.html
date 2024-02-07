@@ -1,18 +1,18 @@
 <!-- User details form -->
 <div class="row">
-    <div class="col-6">
+    <div class="col-sm-5">
         <div class="card mb-3">
             <div class="card-header bg-dark text-white">
                 User Details
             </div>
             <div class="card-body">
                 <form [formGroup]="usersForm" (ngSubmit)="createUser()">
-                    <div formGroupName = "personalDetails">
+                    <div formGroupName = "personalDetails" class="form-group">
                         <div class="form-inline mb-2">
                             <!-- <label class="sr-only" for="userName">UserName</label> -->
                             <input id="userName" class="form-control mr-sm-2" type="text" formControlName="userName" placeholder="User Name">
                             <!-- <label class="sr-only" for="mobile">Mobile</label> -->
-                            <input id="mobile" class="form-control mr-sm-2" type="number" formControlName="mobile" placeholder="Mobile">
+                            <input id="mobile" class="form-control" type="number" formControlName="mobile" placeholder="Mobile">
                         </div>
                         <div class="form-inline">
                             <!-- <label for="email">Email:</label> -->
@@ -20,20 +20,18 @@
                             <!-- <label for="password">password:</label> -->
                             <input id="password" class="form-control mr-sm-2" type="password" formControlName="password" placeholder="Password">
                         </div>
-                        <div class="form-group">
-                            <label for="role">Role:</label>
-                            <select id="role" class="form-control" formControlName="role">
-                                <option *ngFor="let role of _roles" [ngValue]="role.name">{{role.name}}</option>
+                        <div class="form-inline mt-2">
+                            <!-- <label for="role">Role:</label> -->
+                            <select id="role" class="form-control w-50 mr-sm-2" formControlName="role">
+                                <option *ngFor="let role of _roles" [ngValue]="role.name">{{role.name | titlecase}}</option>
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="pincode">Pin Code:</label>
-                            <input id="pincode" class="form-control" type="text" formControlName="pinCode">
+                            <!-- <label for="pincode">Pin Code:</label> -->
+                            <input id="pincode" class="form-control" type="text" formControlName="pinCode" placeholder="Pincode">
                         </div>
                     </div>
-                    <div class="form-group" *ngIf="role=='CUSTOMER'">
+                    <div *ngIf="role=='CUSTOMER'">
                         <label>Add Services:</label>
-                        <div class="card p-1">
+                        <div class="card p-1 w-75">
                             <div class="form-check" formArrayName="serviceArray" *ngFor="let serv of htmlServices index as i">
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" [formControlName]="i" [id]="serv.serviceId">
@@ -50,7 +48,7 @@
         </div>
     </div>
     <!-- User table depends on user role -->
-    <div class="col-6">
+    <div class="col-sm-7">
         <div class="card">
             <div class="card-header bg-dark text-white" *ngIf="role != ''">
                 {{ role + 's' | titlecase}}
@@ -68,8 +66,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let user of users">
-                            <td>{{ user.id }}</td>
+                        <tr *ngFor="let user of users index as i">
+                            <td>{{ i + 1 }}</td>
                             <td>{{ user.userName | titlecase}}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.pinCode }}</td>

@@ -24,4 +24,12 @@ export class ComplaintService {
     engineerId: number) : Observable<Complaint>{
       return this.http.put<Complaint>(`${this._rootUrl}/complaint/${complaintId}/engineer/${engineerId}`, null)
   }
+
+  jobNotDone(id: number) : Observable<Complaint>{
+    return this.http.put<Complaint>(`${this._rootUrl}/engineer/complaint/${id}`,null);
+  }
+
+  resolvedComplaint(id: number) : Observable<Complaint>{
+    return this.http.patch<Complaint>(`${this._rootUrl}/engineer/complaint/${id}`,null)
+  }
 }

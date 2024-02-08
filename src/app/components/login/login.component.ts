@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscribable, Subscriber, Subscription } from 'rxjs';
 import { ServicesService } from 'src/app/service/services.service';
 import { UserService } from 'src/app/service/user.service';
 
@@ -9,7 +10,7 @@ import { UserService } from 'src/app/service/user.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
 
   constructor(
@@ -19,19 +20,25 @@ export class LoginComponent implements OnInit {
 
   @ViewChild('loginForm') form!: NgForm;
 
+  subs: Subscription[]=[];
+
   ngOnInit(): void {
+    this.subs.push(
     this.services.getFullServices().subscribe((srv) => {
       srv.forEach((service) => this.services.setService(service))
-    })
+    }))
+    this.subs.push(
     this.userService.getHttpUsers()
     .subscribe((users) => {
       users.forEach((user) => this.userService.setUsers(user));
-    });
+    }));
   }
+
 
   onSubmit(){
     let email = this.form.value['email'];
     let password = this.form.value['password'];
+    this.subs.push(
     this.userService.login(email, password)
     .subscribe({
       next: user => {
@@ -53,7 +60,7 @@ export class LoginComponent implements OnInit {
           }
           case 'ENGINEER':{
             this.userService.setAdmin(user);
-            this.route.navigate(['admin']);
+            this.route.navigate(['engineer']);
               break;  
           }
         }
@@ -66,8 +73,10 @@ export class LoginComponent implements OnInit {
         //   this.errorMessage = "Database not Started!"
         // }
       }
-    });
+    }));
   }
 
-
+  ngOnDestroy(): void {
+      this.subs.forEach((sub) => sub.unsubscribe())
+  }
 }

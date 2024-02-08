@@ -9,6 +9,8 @@ import { LoginComponent } from './components/login/login.component';
 import { UsermanageComponent } from './components/usermanage/usermanage.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { ManagerComponent } from './components/manager/manager.component';
+import { EngineerComponent } from './components/engineer/engineer.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { ManagerComponent } from './components/manager/manager.component';
     LoginComponent,
     UsermanageComponent,
     CustomerComponent,
-    ManagerComponent
+    ManagerComponent,
+    EngineerComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

@@ -1,110 +1,124 @@
-<div class="container-fluid mb-2 shadow">
-    <div class="row mt-5 mb-5 shadow">
-        <div class="col-sm-5 mt-3">
-            <div class="card h-25">
-                <div class="card-header">
-                    All Complaints Table...
-                </div>
+<div class="container-fluid mb-5 mt-5">
+    <div class="row mt-5">
+        <div class="col-sm-3 h-25 mt-3">
+            <div class="card text-white bg-dark">
+                <h4 class="card-header">
+                    Complaints Status...
+                </h4>
                 <div class="card-body">
-                    <table class="table table-light table-sm table-striped">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>#</th>
-                                <th>Complaints</th>
-                                <th>C/S</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let complaint of allComplaints index as i">
-                                <td>{{i+1}}</td>
-                                <td>{{complaint.complaint}}</td>
-                                <td>{{complaint.service.name}}</td>
-                                <td>{{complaint.status}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="card h-25 mt-2">
-                <div class="card-header">
-                    Raised Complaints Table...
-                </div>
-                <div class="card-body">
-                    <table class="table table-light table-sm">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>#</th>
-                                <th>Complaints</th>
-                                <th>C/S</th>
-                                <th>PinCode</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let complaint of raisedComplaint index as i">
-                                <td>{{i+1}}</td>
-                                <td>{{complaint.complaint}}</td>
-                                <td>{{complaint.service.name}}</td>
-                                <td>{{complaint.customer?.pinCode}}</td>
-                                <td><button class="btn btn-info" type="button" (click)="selectEngineer(complaint)">Select Engineer</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="card h-25 mt-2">
-                <div class="card-header">
-                    ON_Going Complaints Table...
-                </div>
-                <div class="card-body">
-                    <table class="table table-light table-sm">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>#</th>
-                                <th>Complaints</th>
-                                <th>C/S</th>
-                                <th>PinCode</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr [ngClass]="i%2 === 0?'table-primary':''" *ngFor="let complaint of ongoingComplaint index as i">
-                                <td>{{i+1}}</td>
-                                <td>{{complaint.complaint}}</td>
-                                <td>{{complaint.service.name}}</td>
-                                <td>{{complaint.customer?.pinCode}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="list-group">
+                        <button class="list-group-item list-group-item-action list-group-item-warning" type="button" (click)="selectStatus(status.status)" *ngFor="let status of complaintStatus"> {{status.status + ' Complaints' | titlecase}}</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-7 mt-3">
-            <div class="card" *ngIf="showEngineer">
-                <div class="card-header">
-                    Engineers
-                </div>
+        <div class="col-sm-9 mt-3">
+            <div class="card text-white bg-dark">
+                <h4 class="card-header">
+                    Complaints Table...
+                </h4>
                 <div class="card-body">
                     <table class="table table-light">
-                        <thead class="thead-dark">
+                        <thead class="bg-secondary">
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>PinCode</th>
+                                <th>Create Date</th>
+                                <th>Ref #</th>
+                                <th>Status</th>
+                                <th></th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let engineer of engineers index as i">
-                                <td>{{i + 1}}</td>
-                                <td>{{engineer.userName}}</td>
-                                <td>{{engineer.pinCode}}</td>
-                                <td><button class="btn btn-success" type="button"(click)="assignJob(engineer.id)">Assign Job</button></td>
+                            <tr [ngClass]="i%2 == 0 ? 'bg-lightcolor':''" *ngFor="let complaint of filterComplaints index as i">
+                                <td> {{i + 1}} </td>
+                                <td> {{complaint.cdate | date: 'dd/MM/yyyy'}}</td>
+                                <td> {{complaint.referenceNo}} </td>
+                                <td> {{complaint.status}} </td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm" type="button" (click)="showHtmlComplaint(complaint)" data-toggle="modal" data-target="#complaint">Show Details</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#customer" (click)="showCustomer(complaint.customer!)">Show Customer</button>
+                                </td>
+                                <td *ngIf="complaint.status=='RAISED' else nothing">
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#engineer"(click)="showEngineer(complaint)">Show Engineer</button>
+                                </td>
+                                <ng-template #nothing><td></td></ng-template>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- Modals -->
+    <div class="modal" id="engineer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div *ngIf="showMsg">
+                    <div class="alert alert-primary" role="alert">
+                        You successfully assigned the job.
+                    </div>
+                </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenteredLabel">Select Engineer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeSpinner()">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body lead" *ngFor="let engineer of engineers">
+                    <p>
+                        {{'Name: ' + engineer.userName}} <br>
+                        {{'Pincode: ' + engineer.pinCode}} <br>
+                        {{'Email: '+ engineer.email}} <br>
+                        {{'Mobile: '+ engineer.mobile}} <br>
+                        <button [id]="engineer.id" class="btn btn-sm bg-warning" type="button" (click)="assignJob($event, engineer.id)">
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="showSpiner && engineer.id == spinId else text">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <ng-template #text>Assign Job</ng-template>
+                        </button>        
+                    </p>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="customer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenteredLabel">Customer's Details..</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                    {{customer.userName}} <br>
+                    {{customer.email}} <br>
+                    {{customer.pinCode}} <br>
+                    {{customer.mobile}} <br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="complaint" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenteredLabel">Complaint's Details..</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{complaintDetail|json}}
+            </div>
+        </div>
+    </div>
     </div>
 </div>

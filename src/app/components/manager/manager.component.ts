@@ -11,14 +11,23 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class ManagerComponent implements OnInit {
 
+  complaintStatus: any[] = [
+    {'status': 'ALL'},
+    {'status': 'RAISED'},
+    {'status': 'ON_GOING'},
+    {'status': 'ESCALATED'},
+    {'status': 'RESOLVED'}
+  ];
+
+  filterComplaints: Complaint[] = [];
   allComplaints: Complaint[] = [];
-  raisedComplaint: Complaint[] = [];
-  ongoingComplaint: Complaint[] = [];
-  resolvedComplaint: Complaint[] = [];
-  escalatedComplaint: Complaint[] = [];
   engineers!:User[];
+  showSpiner:boolean = false;
+  complaintDetail!: Complaint;
   complaintId: number = 0;
-  showEngineer: boolean = false
+  spinId: number = 0;
+  customer: User = {userName: '', email: '', mobile: '', id: 0, password: '', role: ''};
+  showMsg: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -27,29 +36,48 @@ export class ManagerComponent implements OnInit {
 
   ngOnInit(){
     this.complaintsService.getAllComplaints()
-      .subscribe((complnts) =>{
+    .subscribe((complnts) =>{
         this.allComplaints = complnts;
-        this.raisedComplaint = this.allComplaints.filter((value) => value.status == 'RAISED')
-        this.ongoingComplaint = this.allComplaints.filter((value) => value.status == 'ON_GOING')
-        this.resolvedComplaint = this.allComplaints.filter((value) => value.status == 'RESOLVED')
-        this.escalatedComplaint = this.allComplaints.filter((value) => value.status == 'ESCALATED')
-        });
-
+    });    
   }
 
-  selectEngineer(complaint: Complaint){
+  assignJob(e: any, eid: number ){
+    this.complaintsService.assignEngineerToComplaint(this.complaintId,eid).subscribe((comp) => {
+      let i = this.allComplaints.findIndex((value) => value.complaintId == comp.complaintId);
+      this.spinId = eid;
+      this.showSpiner = true;
+      setTimeout(() => {
+        this.showMsg = true;
+        this.showSpiner = false;
+      }, 3000);  
+      this.allComplaints[i].status = comp.status;
+    });
+  }
+
+  selectStatus(value: string){
+      if (value == 'ALL'){
+        this.filterComplaints = this.allComplaints;
+      }else {
+        this.filterComplaints = this.allComplaints.filter((c) => c.status == value);
+      }
+  }
+
+  showEngineer(complaint: Complaint){
     let pincode: string = complaint.customer?.pinCode!;
     this.complaintId = complaint.complaintId!;
     this.engineers = this.userService.getUsers().filter((user) => user.pinCode == pincode && user.role == 'ENGINEER');
-    this.showEngineer = true;
   }
 
-  assignJob(eid: number){
-    this.complaintsService.assignEngineerToComplaint(this.complaintId,eid).subscribe((comp) => {
-      let i = this.raisedComplaint.findIndex((value) => value.complaintId == this.complaintId);
-      this.raisedComplaint.splice(i,1);
-      this.ongoingComplaint.push(comp)
-      this.showEngineer = false;
-    });
+  showCustomer(cust: User){
+    this.customer = cust;
   }
+  showHtmlComplaint(complaint: Complaint){
+    this.complaintDetail = complaint;
+  }
+
+  closeSpinner(){
+    this.showSpiner = false;
+    this.showMsg = false
+  }
+
 }

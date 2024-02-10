@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { UserService } from './service/user.service';
 import { ServicesService } from './service/services.service';
 import { ComplaintService } from './service/complaint.service';
@@ -8,17 +8,22 @@ import { ComplaintService } from './service/complaint.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewChecked {
   title = 'abctelecom';
+  role: string = '';
+  username: string = '';
+
   constructor(
     private userService: UserService, 
     private services: ServicesService,
     private complaint:  ComplaintService){}
-
   
-  ngOnInit(): void {
+  ngAfterViewChecked(): void {
+    this.role = this.userService.getAdmin().role;
+    this.username = this.userService.getAdmin().userName;
   }
 
+  
   isLogin(){
     return this.userService.isLogin
   }

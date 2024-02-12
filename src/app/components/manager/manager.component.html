@@ -116,7 +116,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                {{complaintDetail|json}}
+                <p>
+                  Create Date: {{complaintDetail.cdate | date: 'mediumDate'}} <br>
+                  {{ 'Complaint: ' + complaintDetail.complaint}} <br>
+                  {{'Complaint Against: ' + complaintDetail.service.name}} <br>
+                  Assign Date: {{complaintDetail.jdate | date: 'mediumDate'}} <br>
+                  Feedback: {{complaintDetail.feedback}} <br>
+                  {{'Status: ' + complaintDetail.status}}
+                </p>
             </div>
         </div>
     </div>

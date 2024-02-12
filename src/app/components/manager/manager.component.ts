@@ -1,3 +1,4 @@
+import { Service } from './../../interface/service';
 import { Complaint } from './../../interface/complaint';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/interface/user';
@@ -23,7 +24,7 @@ export class ManagerComponent implements OnInit {
   allComplaints: Complaint[] = [];
   engineers!:User[];
   showSpiner:boolean = false;
-  complaintDetail!: Complaint;
+  complaintDetail: Complaint = {complaint: '', status: '', service: {name: '',serviceId: 0}, cdate: new Date(), jdate: new Date()};
   complaintId: number = 0;
   spinId: number = 0;
   customer: User = {userName: '', email: '', mobile: '', id: 0, password: '', role: ''};

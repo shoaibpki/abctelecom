@@ -16,7 +16,8 @@ const routes: Routes = [
   {path: 'customer', component: CustomerComponent, canActivate: [UserresolveGuard]},
   {path: 'manager', component: ManagerComponent, canActivate: [UserresolveGuard]},
   {path: 'engineer', component: EngineerComponent, canActivate: [UserresolveGuard]},
-  {path: 'admin', component: AdminComponent, canActivate: [UserresolveGuard], children:[
+  {path: 'admin', component: AdminComponent, 
+  canActivate: [UserresolveGuard], children:[
     {path: 'user/manage', component: UsermanageComponent},
   ]},
   {path: '**', component: AppComponent}

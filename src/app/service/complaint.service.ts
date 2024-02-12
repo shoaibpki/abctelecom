@@ -32,4 +32,8 @@ export class ComplaintService {
   resolvedComplaint(id: number) : Observable<Complaint>{
     return this.http.patch<Complaint>(`${this._rootUrl}/engineer/complaint/${id}`,null)
   }
+
+  saveFeedback(complaint: Complaint): Observable<Complaint>{
+    return this.http.put<Complaint>(`${this._rootUrl}/complaint`,complaint);
+  }
 }

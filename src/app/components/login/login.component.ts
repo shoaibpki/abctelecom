@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Subscribable, Subscriber, Subscription } from 'rxjs';
+import { Router, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
+import { Observable, Subscribable, Subscriber, Subscription } from 'rxjs';
 import { ServicesService } from 'src/app/service/services.service';
 import { UserService } from 'src/app/service/user.service';
 
@@ -16,11 +16,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService, 
     private route: Router,
-    private services: ServicesService){}
+    private services: ServicesService,
+    private activatedRoute: ActivatedRoute){}
 
   @ViewChild('loginForm') form!: NgForm;
 
   subs: Subscription[]=[];
+  myObserver!: Observable<any>;
 
   ngOnInit(): void {
     this.subs.push(

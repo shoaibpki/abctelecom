@@ -50,7 +50,23 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-6">
-                            <input class="btn btn-info" type="submit" [value]="_isedit? 'Update User': 'Create User'" [disabled]="usersForm.invalid">
+                            <button 
+                                class="btn btn-info" 
+                                type="submit" 
+                                [value] ="_isedit && !showSpinner? 'Update User':'Create User'" 
+                                [disabled]="usersForm.invalid"
+                                style="width: 120px; height: 45px;">
+                                <div class="spinner-border spinner-border-sm" role="status" *ngIf="showSpinner else message">
+                                    <span class="sr-only">Loading...</span>
+                                  </div>
+                                <ng-template #message>Create User</ng-template>
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <input class="btn btn-secondary my-0" type="button" value="Reset Form" (click)="reset()" style="width: 120px; height: 45px;">
+                        </div>
+                        <div class="alert alert-primary mt-2 " role="alert" *ngIf="showMessage">
+                            Successfully Save {{role}}!
                         </div>
                     </div>
                 </form>

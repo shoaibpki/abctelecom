@@ -5,6 +5,7 @@ export interface Complaint {
     complaint: string;
     status: string;
     service: Service;
+    feedback?: string;
     complaintId?: number;
     referenceNo?: string;
     customer?: User;

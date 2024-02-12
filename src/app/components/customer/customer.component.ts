@@ -13,11 +13,14 @@ import { ComplaintService } from 'src/app/service/complaint.service';
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
-[x: string]: any;
 
   @ViewChild('complaintForm') form!: NgForm;
   user!: User;
   cService!: Service;
+  showSpinner: boolean = false;
+  getFeedback: string = '';
+  complaint!: Complaint;
+  showMsg: boolean = false;
 
   constructor(
     private userService: UserService, 
@@ -41,7 +44,25 @@ export class CustomerComponent implements OnInit {
       .subscribe((comp) => {
         this.user.complaints?.push(comp);
       });    
-    console.log(this.user.complaints);
+  }
+
+  feedback(){
+    this.showSpinner = true
+    this.complaint.feedback = this.getFeedback;
+    setTimeout(() => {
+      this.complaintService.saveFeedback(this.complaint).subscribe((comp) => {
+        this.complaint = comp
+        this.showSpinner = false;
+        this.showMsg = true;
+        console.log(this.complaint);
+      })
+    }, 3000);
+  }
+
+  setComplaint(comp: Complaint){
+    this.showMsg = false;
+    this.complaint = comp;
+    this.getFeedback = comp.feedback!
   }
 
 

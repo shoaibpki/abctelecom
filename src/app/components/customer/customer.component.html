@@ -36,24 +36,25 @@
             <form #complaintForm="ngForm" (ngSubmit)="onSubmit(complaintForm.value)">
                 <div class="form-group">
                     <label for="complaint">Complaint:</label>
-                    <textarea rows="6"  id="complaint" class="form-control" name="complaint" ngModel></textarea>
+                    <textarea rows="6"  id="complaint" class="form-control" name="complaint" ngModel required></textarea>
                 </div>
                 <div class="form-check" *ngFor="let service of user.services">
                     <label class="form-check-label">
-                      <input type="radio" class="form-check-input"  name="serviceId" [value]="service.serviceId" ngModel>{{service.name}}
+                      <input type="radio" class="form-check-input"  name="serviceId" [value]="service.serviceId" ngModel required>{{service.name}}
                     </label>
                   </div>
                   <div class="form-group">
-                    <input class="form-control" type="submit">
+                    <input class="form-control" type="submit"[disabled]="complaintForm.invalid">
                   </div>
             </form>
         </div>
-        <table class="table table-light">
+        <table class="table table-light table-sm">
             <thead class="thead-dark">
                 <tr>
                     <th>Complaint</th>
                     <th>Created Date</th>
                     <th>Status</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -62,12 +63,48 @@
                     <td>{{complaint.cdate | date: 'dd-MM-yyyy'}}</td>
                     <td [ngClass]="{
                         'bg-warning' : complaint.status === 'ON_GOING',
-                        'bg-info' : complaint.status === 'PENDING',
-                        'bg-success' : complaint.status === 'RESOVLED',
+                        'bg-info' : complaint.status === 'RAISED',
+                        'bg-success' : complaint.status === 'RESOLVED',
                         'bg-danger' : complaint.status === 'ESCALATED'
-                        }">{{complaint.status}}</td>
+                        }">{{complaint.status | titlecase}}</td>
+                    <td  *ngIf="complaint.status == 'RESOLVED' || complaint.status == 'ESCALATED'">
+                        <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#feedback" (click)="setComplaint(complaint)">
+                            Feedback
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal" id="feedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenteredLabel">Feedback Window</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="feedback">Feedback</label>
+                        <textarea id="feedback" class="form-control" name="" rows="3" [(ngModel)]="getFeedback"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary mb-2" (click)="feedback()">
+                        <div class="spinner-border spinner-border-sm" role="status" *ngIf="showSpinner else text">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </button>
+                    <ng-template #text>Save Feedback</ng-template>
+                    <div class="alert alert-success" role="alert" *ngIf="showMsg">
+                        You successfully save Feedback against Complaint!
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

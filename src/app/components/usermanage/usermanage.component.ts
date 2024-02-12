@@ -16,6 +16,8 @@ export class UsermanageComponent implements OnInit {
   @Input() role: string = '';
 
   usersForm!: FormGroup;
+  showMessage: boolean = false;
+  showSpinner: boolean = false;
   user!: User;
   _isedit: boolean = false;
   htmlServices: Service[] = [];
@@ -69,10 +71,10 @@ export class UsermanageComponent implements OnInit {
     this.usersForm =  this.form.group({
       personalDetails: this.form.group({
         userName: this.form.control(null, Validators.required),
-        mobile: this.form.control(null),
+        mobile: this.form.control(null, Validators.minLength(12)),
         email: this.form.control(null, [Validators.required, Validators.email]),
         password: this.form.control(null, Validators.required),
-        role: this.form.control(null),
+        role: this.form.control(this.role),
         pinCode: this.form.control(null, Validators.required)  
       }),
       serviceArray: this.form.array([])
@@ -85,12 +87,16 @@ export class UsermanageComponent implements OnInit {
       console.log(this.usersForm.value['personalDetails'])
       // adding services of customer
       this.addServiceToCustomer()
-
-      this.userService.createUser(this.user)
-      .subscribe((data) => {
-        // adding new user in user table
-        this.users.push({...this.user , id: data})
-      });  
+      this.showSpinner = true;
+      setTimeout(() => {
+        this.showSpinner = false
+        this.showMessage = true
+        this.userService.createUser(this.user)
+        .subscribe((data) => {
+          // adding new user in user table
+          this.users.push({...this.user , id: data})
+        });  
+      }, 3000);
     } else {
       let id = this.user.id;
       this.user = this.usersForm.value['personalDetails'];
@@ -164,5 +170,11 @@ export class UsermanageComponent implements OnInit {
         }          
       })
     }
+  }
+
+  reset(){
+    this.showMessage = false;
+    this.showSpinner = false;
+    this.usersForm.reset();
   }
 }

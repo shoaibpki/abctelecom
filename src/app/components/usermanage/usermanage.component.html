@@ -8,7 +8,12 @@
             <div class="card-body bg-light">
                 <form [formGroup]="usersForm" (ngSubmit)="createUser()">
                     <div formGroupName = "personalDetails" class="form-group">
-                        <div class="row mb-2">
+                        <div class="mb-2">
+                            <div class="alert alert-info" role="alert" *ngIf="showMessage">
+                                 {{msg+ role | titlecase}}!
+                            </div>    
+                        </div>
+                        <div class="row mb-2 mt-2">
                             <div class="col">
                                 <input id="userName" class="form-control" type="text" formControlName="userName" placeholder="User Name">
                             </div>
@@ -26,9 +31,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col">
-                                <select id="role" class="form-control" formControlName="role">
-                                    <option *ngFor="let role of _roles" [ngValue]="role.name">{{role.name | titlecase}}</option>
-                                </select>
+                                <input id="role" class="form-control" type="text" formControlName="role" [value]="role" [placeholder]="role">
                             </div>
                             <div class="col">
                                 <input id="pincode" class="form-control" type="text" formControlName="pinCode" placeholder="Pincode">
@@ -56,17 +59,12 @@
                                 [value] ="_isedit && !showSpinner? 'Update User':'Create User'" 
                                 [disabled]="usersForm.invalid"
                                 style="width: 120px; height: 45px;">
-                                <div class="spinner-border spinner-border-sm" role="status" *ngIf="showSpinner else message">
-                                    <span class="sr-only">Loading...</span>
-                                  </div>
+                                <i *ngIf="showSpinner else message" class="fas fa-spinner fa-spin"></i>
                                 <ng-template #message>Create User</ng-template>
                             </button>
                         </div>
                         <div class="col-6">
                             <input class="btn btn-secondary my-0" type="button" value="Reset Form" (click)="reset()" style="width: 120px; height: 45px;">
-                        </div>
-                        <div class="alert alert-primary mt-2 " role="alert" *ngIf="showMessage">
-                            Successfully Save {{role}}!
                         </div>
                     </div>
                 </form>
@@ -84,9 +82,19 @@
                     <thead class="thead-light">
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
+                            <th (click)="onSortName()">
+                                Name
+                                <span class="mx-3" *ngIf="_sortByName">
+                                    <i (click)="sortField('userName')" [ngClass]="!_sortArrow? 'fa-solid fa-arrow-down text-danger' : 'fa-solid fa-arrow-up text-success'"></i>
+                                </span> 
+                            </th>
                             <th>Email</th>
-                            <th>Pin Code</th>
+                            <th (click)="onSortPincode()">
+                                Pin Code
+                                <span class="mx-3" *ngIf="_sortBypincode">
+                                    <i (click)="sortField('pinCode')" [ngClass]="!_sortArrow? 'fa-solid fa-arrow-down text-danger' : 'fa-solid fa-arrow-up text-success'"></i>
+                                </span> 
+                            </th>
                             <th></th>
                             <th></th>
                         </tr>

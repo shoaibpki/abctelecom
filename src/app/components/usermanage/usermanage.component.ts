@@ -4,7 +4,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServicesService } from 'src/app/service/services.service';
 import { Service } from 'src/app/interface/service';
-
+import * as _ from "underscore";
 @Component({
   selector: 'app-usermanage',
   templateUrl: './usermanage.component.html',
@@ -15,23 +15,18 @@ export class UsermanageComponent implements OnInit {
   @Input() users: User[] = [];
   @Input() role: string = '';
 
-  usersForm!: FormGroup;
+  _sortArrow: boolean = false;
+  _sortByName: boolean = true;
+  _sortBypincode: boolean = false;
   showMessage: boolean = false;
   showSpinner: boolean = false;
-  user!: User;
   _isedit: boolean = false;
-  htmlServices: Service[] = [];
-  _roles: {name: string}[] = [
-    {
-      name:"CUSTOMER"
-    },
-    {
-      name: "MANAGER"
-    },
-    {
-      name: "ENGINEER"
-    }];
 
+  usersForm!: FormGroup;
+  user!: User;
+  htmlServices: Service[] = [];
+  msg: string = "Successfully Save "
+    
   constructor(
     private userService: UserService,
     private uServices: ServicesService, 
@@ -42,7 +37,6 @@ export class UsermanageComponent implements OnInit {
     this.createForm();
     this.htmlServices = this.uServices.getServices();
     this.addServiceInCheckBoxes();
-    console.log(this.htmlServices)
   }
   
   public get services() : FormArray {
@@ -61,7 +55,7 @@ export class UsermanageComponent implements OnInit {
   private updateServiceInCheckBoxes(s: Service){
     let index : Number = this.htmlServices.findIndex((cs) => cs.serviceId == s.serviceId)
     this.services.controls.map((control, i) => {
-      if (i == index){
+      if (i == index){  
         control.patchValue(true)
       }
     })
@@ -74,7 +68,7 @@ export class UsermanageComponent implements OnInit {
         mobile: this.form.control(null, Validators.minLength(12)),
         email: this.form.control(null, [Validators.required, Validators.email]),
         password: this.form.control(null, Validators.required),
-        role: this.form.control(this.role),
+        role: this.form.control({value: this.role, disabled: true}),
         pinCode: this.form.control(null, Validators.required)  
       }),
       serviceArray: this.form.array([])
@@ -84,19 +78,30 @@ export class UsermanageComponent implements OnInit {
   createUser(){
     if (!this._isedit){
       this.user = this.usersForm.value['personalDetails'];
-      console.log(this.usersForm.value['personalDetails'])
+      this.user.role = this.role;
+      
       // adding services of customer
       this.addServiceToCustomer()
-      this.showSpinner = true;
-      setTimeout(() => {
-        this.showSpinner = false
-        this.showMessage = true
-        this.userService.createUser(this.user)
-        .subscribe((data) => {
-          // adding new user in user table
-          this.users.push({...this.user , id: data})
-        });  
-      }, 3000);
+      
+      if ( this.user.services?.length == 0){
+        this.showMessage = true;
+        this.msg = "atleast one service select for a "
+      } else {
+        this.showSpinner = true;
+        this.showMessage = false;
+        setTimeout(() => {
+          this.showSpinner = false;
+          this.msg = "Successfully Save ";
+          this.showMessage = true;
+          this.userService.createUser(this.user)
+          .subscribe((data) => {
+
+            // adding new user in user table
+            this.users.push({...this.user , id: data})
+          });  
+          this.usersForm.reset();
+        }, 5000);  
+      }
     } else {
       let id = this.user.id;
       this.user = this.usersForm.value['personalDetails'];
@@ -112,7 +117,6 @@ export class UsermanageComponent implements OnInit {
         })
       this._isedit = false;
     }
-    this.usersForm.reset();
   }
   
   userEdit(id: number){
@@ -156,7 +160,6 @@ export class UsermanageComponent implements OnInit {
       error: err => {
         let index = this.users.findIndex(user => user.id === id);
         this.users.splice(index, 1);  
-        // console.log(err)
       }
     }));
   }
@@ -169,6 +172,7 @@ export class UsermanageComponent implements OnInit {
           this.user.services?.push(this.htmlServices[i])
         }          
       })
+      console.log(this.user.services);
     }
   }
 
@@ -177,4 +181,24 @@ export class UsermanageComponent implements OnInit {
     this.showSpinner = false;
     this.usersForm.reset();
   }
+
+  sortField(sortField: string){
+    if(!this._sortArrow){
+      this.users = _.sortBy<User[]>(this.users, sortField);
+      this._sortArrow = true;
+    }else{
+      this.users = _.sortBy<User[]>(this.users, sortField).reverse();
+      this._sortArrow = false;
+    }
+  }
+
+  onSortName(){
+    this._sortByName = true;
+    this._sortBypincode = false;
+  }
+  onSortPincode(){
+    this._sortByName = false;
+    this._sortBypincode = true;
+  }
+
 }

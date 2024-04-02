@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row" [@slideTop]="totalRoles.length">
+        <div class="col-sm mt-1" *ngFor="let role of totalRoles">
+            <div class="card">
+                <div class="card-header bg-dark text-light">
+                    {{role.role}}
+                </div>
+                <div class="card-body bg-warning">
+                    <h5 class="card-title">{{'Total '+ role.role + 's : ' + role.count | titlecase}} </h5>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum neque urna, commodo a dignissim at, sollicitudin nec dolor. Maecenas at vulputate lacus. Sed sit amet neque in mi cursus ultricies. Nulla sed erat sed felis vulputate ultrices dictum nec tortor. Nam vulputate cursus nibh vitae tempor. Praesent in tempor massa, nec condimentum leo.</p>
+                </div>
+                <div class="card-footer bg-dark text-light">
+                    Last Hired&nbsp; {{ getNewJoinDatebyRole(role.role) | date: 'MMMM d, yyyy'}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row pl-4 pb-2">
+        <h4>Services&nbsp; :</h4>
+    </div>
+    <div [@slideRight]="services.length">
+        <div class="col p-3 mb-4 bg-success text-black-50 w-75 rounded-pill" *ngFor="let service of services">
+            <div [@showService]="service.showService? 'showed': 'hidden'">
+                <span class="pl-2"><i><b>{{service.name}}</b></i></span>
+                <span class="pr-3 float-right" (click)="service.showService= !service.showService">
+                    <i class="fa-solid fa-circle-down" role="button" *ngIf="!service.showService else up"></i>
+                    <ng-template #up><i class="fa-solid fa-circle-up" role="button"></i></ng-template>
+                </span>
+                <div *ngIf="service.showService">
+                    <hr>
+                    <span class="pl-3">complaints against this service:&nbsp;</span> 
+                    <span class="p-1 badge badge-light"></span>
+                    <span class="float-right pr-5">
+                        <span>Customers Avail this service:&nbsp;</span>
+                        <span class="p-1 badge badge-light">{{serviceTotal(service.serviceId)}}</span>
+                    </span> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

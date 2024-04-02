@@ -2,6 +2,7 @@ import { Service } from "./service";
 import { User } from "./user";
 
 export interface Complaint {
+    $key?: string;
     complaint: string;
     status: string;
     service: Service;
@@ -10,8 +11,8 @@ export interface Complaint {
     referenceNo?: string;
     customer?: User;
     engineerId?: number;
-    cdate?: Date; // complaint generated date
-    jdate?: Date; // complaint assigning to engineer date
-    rdate?: Date; // complaint resolved date
+    cdate: any; // complaint generated date
+    jdate?: any; // complaint assigning to engineer date
+    rdate?: any; // complaint resolved date
 
 }

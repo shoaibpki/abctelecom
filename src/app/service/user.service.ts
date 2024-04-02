@@ -1,8 +1,10 @@
+import  * as _  from 'underscore';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, filter, observable } from 'rxjs';
 import { User } from '../interface/user';
-
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { get, getDatabase, increment, onChildAdded, onValue, push,  query,  ref, set } from 'firebase/database'
 @Injectable({
   providedIn: 'root'
 })
@@ -10,10 +12,20 @@ export class UserService {
 
   private _isLogin: boolean = false;
   private users: User[] = []; 
-  private _admin!: User; 
+  private _admin: User = {
+    role: '',
+    userName: '',
+    email: '',
+    password: '',
+    id: 0,
+    joiningDate: new Date,
+    mobile: ''
+  }; 
   private _rootUrl = 'http://localhost:8082/abctelecom/users'
+  private _role: string = '';
+  // private userList: AngularFireList<User>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient ) {}
 
   
   public set isLogin(v : boolean) {
@@ -34,6 +46,18 @@ export class UserService {
   public getAdmin() : User {
     return this._admin;
   }
+
+  
+  public set setRole(v : string) {
+    this._role = v;
+  }
+
+  
+  public get getRole() : string {
+    return this._role
+  }
+  
+  
   
   createUser(user: User) : Observable<any>{
     return this.http.post(`${this._rootUrl}`, user)
@@ -69,4 +93,65 @@ export class UserService {
 
   }
 
+  registerFireBaseUser(email: string, password: string){
+    let auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        let user = userCredential.user;
+        console.log({user});
+      })
+      .catch((error) => {
+        console.log(error);
+      }) 
+  }
+
+  loginFireBaseUser(email: string, password: string){
+    let auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        let user = userCredential.user;
+        console.log(user)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  logoutFireBaseUser(){
+    let auth = getAuth();
+    signOut(auth).then(() => console.log('Logout successfully!'));
+  }
+
+  getFireBaseUsers() {
+    let db = getDatabase();
+    let uRef = ref(db, 'users');
+    onValue(uRef, (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        this.setUsers(childSnapshot.val());
+      });
+    }, { onlyOnce: true });
+  }
+  addFirebaseUser(user: User){
+    let u: any = _.max(this.getUsers(), 'id' )
+    let mxId = 0;
+    if (!_.isEmpty(u)){
+      mxId= u.id;
+      user.id = mxId + 1;
+    }else {
+      user.id = 1;
+    }
+    let db = getDatabase();
+    set(ref(db,`users/${user.id}`), user);
+    // let serviceRef = ref(db,`users-services/${user.id}`);
+  }
+
+ // updateFirebaseUser(user: User){
+  //   let key = user.$key!;
+  //   this.userList.update(key, user);
+  // }
+  // deleteFirebaseUser(key: string){
+  //   this.userList.remove(key);
+  // }
+  
 }
+

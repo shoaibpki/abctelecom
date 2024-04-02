@@ -11,7 +11,10 @@ import { CustomerComponent } from './components/customer/customer.component';
 import { ManagerComponent } from './components/manager/manager.component';
 import { EngineerComponent } from './components/engineer/engineer.component';
 import { LogoutComponent } from './components/logout/logout.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServicesComponent } from './components/services/services.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SignupComponent } from './components/signup/signup.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,14 +24,18 @@ import { LogoutComponent } from './components/logout/logout.component';
     CustomerComponent,
     ManagerComponent,
     EngineerComponent,
-    LogoutComponent
+    LogoutComponent,
+    ServicesComponent,
+    DashboardComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,22 +1,28 @@
-<div class="container-fluid mb-5 mt-5">
+<div class="container-fluid mb-5 mt-5" @fadeEffect>
     <div class="row mt-5">
         <div class="col-sm-3 h-25 mt-3">
-            <div class="card text-white bg-dark">
-                <h4 class="card-header">
+            <div class="card">
+                <div class="card-header">
                     Complaints Status...
-                </h4>
+                </div>
                 <div class="card-body">
                     <div class="list-group">
-                        <button class="list-group-item list-group-item-action list-group-item-warning" type="button" (click)="selectStatus(status.status)" *ngFor="let status of complaintStatus"> {{status.status + ' Complaints' | titlecase}}</button>
+                        <button 
+                        class="list-group-item list-group-item-action list-group-item-warning" 
+                        type="button" 
+                        (click)="selectStatus(status.status)" 
+                        *ngFor="let status of complaintStatus"> 
+                            {{status.status + ' Complaints' | titlecase}}
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-sm-9 mt-3">
-            <div class="card text-white bg-dark">
-                <h4 class="card-header">
+            <div class="card">
+                <div class="card-header">
                     Complaints Table...
-                </h4>
+                </div>
                 <div class="card-body">
                     <table class="table table-light">
                         <thead class="bg-secondary">
@@ -76,7 +82,7 @@
                         {{'Pincode: ' + engineer.pinCode}} <br>
                         {{'Email: '+ engineer.email}} <br>
                         {{'Mobile: '+ engineer.mobile}} <br>
-                        <button [id]="engineer.id" class="btn btn-sm bg-warning" type="button" (click)="assignJob($event, engineer.id)">
+                        <button [id]="engineer.id" class="btn btn-sm bg-warning" type="button" (click)="assignJob(engineer.id)">
                             <div class="spinner-border spinner-border-sm" role="status" *ngIf="showSpiner && engineer.id == spinId else text">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -88,12 +94,12 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="customer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+    <div class="modal" id="customer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true" [@modalEffect]="showModal? 'showed': 'hidden'">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenteredLabel">Customer's Details..</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" (click)="modelFalse()" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -108,23 +114,23 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="complaint" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+    <div class="modal" id="complaint" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true" [@modalEffect]="showModal? 'showed': 'hidden'">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalCenteredLabel">Complaint's Details..</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="modelFalse()" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <p>
-                  Create Date: {{complaintDetail.cdate | date: 'mediumDate'}} <br>
-                  {{ 'Complaint: ' + complaintDetail.complaint}} <br>
-                  {{'Complaint Against: ' + complaintDetail.service.name}} <br>
-                  Assign Date: {{complaintDetail.jdate | date: 'mediumDate'}} <br>
-                  Feedback: {{complaintDetail.feedback}} <br>
-                  {{'Status: ' + complaintDetail.status}}
+                    Create Date: {{complaintDetail.cdate | date: 'mediumDate'}} <br>
+                    {{ 'Complaint: ' + complaintDetail.complaint}} <br>
+                    {{'Complaint Against: ' + complaintDetail.service.name}} <br>
+                    Assign Date: {{complaintDetail.jdate | date: 'mediumDate'}} <br>
+                    Feedback: {{complaintDetail.feedback}} <br>
+                    {{'Status: ' + complaintDetail.status}}
                 </p>
             </div>
         </div>

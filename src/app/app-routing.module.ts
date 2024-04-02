@@ -9,16 +9,26 @@ import { AppComponent } from './app.component';
 import { ManagerComponent } from './components/manager/manager.component';
 import { EngineerComponent } from './components/engineer/engineer.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { ServicesComponent } from './components/services/services.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
+  {path: 'signup', component: SignupComponent},
   {path: 'customer', component: CustomerComponent, canActivate: [UserresolveGuard]},
-  {path: 'manager', component: ManagerComponent, canActivate: [UserresolveGuard]},
+  {path: 'manager', component: ManagerComponent, 
+  canActivate: [UserresolveGuard]},
   {path: 'engineer', component: EngineerComponent, canActivate: [UserresolveGuard]},
   {path: 'admin', component: AdminComponent, 
   canActivate: [UserresolveGuard], children:[
-    {path: 'user/manage', component: UsermanageComponent},
+    {path: 'dashboard', component: DashboardComponent},
+    {path: 'manage/customers', component: UsermanageComponent},
+    {path: 'manage/managers', component: UsermanageComponent},
+    {path: 'manage/engineers', component: UsermanageComponent},
+    {path: 'manage/services', component: ServicesComponent},
+    {path: '', redirectTo: 'dashboard', pathMatch: 'prefix'},
   ]},
   {path: '**', component: AppComponent}
 ];

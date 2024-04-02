@@ -5,4 +5,5 @@ export interface Service {
     name: string;
     Description?: string;
     users?: User[];
+    showService?: boolean;
 }

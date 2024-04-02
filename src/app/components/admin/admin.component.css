@@ -1,3 +1,23 @@
 /* .active{
     background-color: rgb(199, 187, 187) !important;
 } */
+
+.bg-menu{
+    /* background-color: darkblue; */
+    /* background-image: linear-gradient(darkblue, skyblue); */
+    background-image: linear-gradient(black, lightgray);
+    /* background-image: linear-gradient(rgb(7, 7, 31), rgb(43, 43, 119)); */
+}
+.my-sidebar {
+    -ms-flex: 0 0 230px;
+    flex: 0 0 230px;
+} 
+
+@media (max-width: 690px) {
+  .my-sidebar {
+    display: none; 
+  } 
+}
+hr{
+    border-color: aliceblue;
+}

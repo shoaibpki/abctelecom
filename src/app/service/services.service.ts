@@ -8,7 +8,23 @@ import { Observable, map } from 'rxjs';
 })
 export class ServicesService {
   private _rootUrl: string = 'http://localhost:8082/abctelecom/service';
-  private _service: Service[] = [];
+  private _service: Service[] = [
+      {
+        serviceId : 1,
+        Description : "Mobile desc",
+        name : "Mobile Service"
+      },
+      {
+        serviceId : 2,
+        Description : "Internet desc",
+        name : "Internet Service"
+      },
+      {
+        serviceId : 3,
+        Description : "TV desc",
+        name : "TV Service"
+      }
+  ];
 
   
   public setService(v : Service) {

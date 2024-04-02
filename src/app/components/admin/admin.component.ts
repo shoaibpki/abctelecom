@@ -1,35 +1,40 @@
 import { User } from './../../interface/user';
 import { UserService } from './../../service/user.service';
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
+import { ServicesService } from 'src/app/service/services.service';
+import * as _ from "underscore";
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
 
   admin!: User;
   role: string = '';
   filterUsers!: User[];
+  showMenu: boolean = true;
+  changeRole:boolean = true;
   
-  constructor(private userService: UserService){}
+  constructor(
+    private route: Router,
+    private userService: UserService,
+    private services: ServicesService){}
 
   ngOnInit(): void {
-    console.log(this.userService.isLogin);
     this.admin = this.userService.getAdmin();
   }
   setRoleCustomer(){
-    this.role = 'CUSTOMER';
-    this.filterUsers = this.userService.getUsers().filter((user) => user.role == this.role)
-    console.log(this.filterUsers)
+    this.userService.setRole = 'CUSTOMER';
   }
   setRoleManager(){
-    this.role = 'MANAGER';
-    this.filterUsers = this.userService.getUsers().filter((user) => user.role == this.role)
+    this.userService.setRole = 'MANAGER';
   }
   setRoleEngineer(){
-    this.role = 'ENGINEER';
-    this.filterUsers = this.userService.getUsers().filter((user) => user.role == this.role)
+    this.userService.setRole = 'ENGINEER';
+  }
+  toggleMenu(){
+    this.showMenu = !this.showMenu;        
   }
 }

@@ -6,6 +6,8 @@ import { Complaint } from 'src/app/interface/complaint';
 import { Service } from 'src/app/interface/service';
 import { UserService } from 'src/app/service/user.service';
 import { ComplaintService } from 'src/app/service/complaint.service';
+import { random } from 'underscore';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-customer',
@@ -21,6 +23,7 @@ export class CustomerComponent implements OnInit {
   getFeedback: string = '';
   complaint!: Complaint;
   showMsg: boolean = false;
+  complaints: Complaint[] = [];
 
   constructor(
     private userService: UserService, 
@@ -29,21 +32,41 @@ export class CustomerComponent implements OnInit {
   ){}
   
   ngOnInit(): void {
-    this.user = this.userService.getAdmin()  
+    this.user = this.userService.getAdmin()
+    this.complaints = this.complaintService.getFirebaseUserComplaint(this.user.id);
   }
 
   onSubmit(fields: any){
+    // save on firebase
     let id: number = fields['serviceId']
+    let date = new Date();
+    let refNo: string = random(9999).toString();
+    let dayref: string = date.getDate().toString();
+    let monthref: string = (date.getMonth() + 1).toString();
+    if (dayref.length === 1){
+      dayref = '0' + dayref;
+    }
+    if (monthref.length === 1){
+      monthref = '0' + monthref
+    }
     this.cService = this.services.getServices().find((service) => service.serviceId == id)!
     let complaint: Complaint = {
       complaint: fields['complaint'],
       status: 'RAISED',
-      service: this.cService
+      service: this.cService,
+      cdate: formatDate(date, 'YYYY-MM-dd','en-US'),
+      referenceNo: 'CMP'+ '-' + refNo + '-' + dayref + '-' + monthref,
+      customer: this.user
     };
-    this.complaintService.saveComplaint(this.user.id, complaint)
-      .subscribe((comp) => {
-        this.user.complaints?.push(comp);
-      });    
+    this.complaintService.addFirebaseComplaint(this.user.id, complaint);
+    this.complaints.push(complaint);
+    this.form.reset();
+
+    // save mysql database
+    // this.complaintService.saveComplaint(this.user.id, complaint)
+    //   .subscribe((comp) => {
+    //     this.user.complaints?.push(comp);
+    //   });    
   }
 
   feedback(){

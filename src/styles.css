@@ -1,2 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@fortawesome/fontawesome-free/css/all.css";
+@import url('https://fonts.googleapis.com/css2?family=Bellefair&display=swap');
+
+nav{
+    font-family: 'Bellefair', serif;
+    /* background-color: black; */
+    width: auto;
+}
+/* nav ul {
+    margin: 0;
+    padding: 0px;
+    overflow:hidden;
+}
+nav ul li{
+    display: inline-block;
+    list-style: none;
+    width: 150px;
+}
+nav li>a{
+    display: block;
+    text-decoration: none;
+    padding: 10px;
+    color: lightgray;
+    font-size: large;
+    text-align: center;
+    border-right: 1px solid white;
+} 
+nav li>a:hover{
+    color: whitesmoke;
+} */

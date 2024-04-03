@@ -35,8 +35,8 @@ export class AppComponent {
   }
 
   logout(){
-    this.userService.getUsers().splice(0, this.userService.getUsers().length)
-    this.services.getServices().splice(0, this.services.getServices().length)
+    // this.userService.getUsers().splice(0, this.userService.getUsers().length)
+    // this.services.getServices().splice(0, this.services.getServices().length)
     this.userService.isLogin = false
   }
 }

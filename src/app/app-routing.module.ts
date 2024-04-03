@@ -30,7 +30,7 @@ const routes: Routes = [
     {path: 'manage/services', component: ServicesComponent},
     {path: '', redirectTo: 'dashboard', pathMatch: 'prefix'},
   ]},
-  {path: '**', component: AppComponent}
+  {path: '**', redirectTo: 'abctelecom', pathMatch: 'full'}
 ];
 
 @NgModule({

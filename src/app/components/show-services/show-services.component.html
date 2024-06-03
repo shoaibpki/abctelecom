@@ -1,0 +1,25 @@
+<h4 class="row ml-2 text-secondary display-4">Featured Product</h4>
+<div class="col-sm-12 mb-2 overflow-hidden" *ngFor="let service of services" [@serviceDetail]="service.showService? 'shown':'hidden'">
+    <div class="row">
+        <div class="w-100 p-3 bg-dark text-info clearfix">
+            <span class="lead">
+                {{ service.name | uppercase }}
+            </span>
+            <span class="float-right" *ngIf="!service.showService">
+                <i class="fa-solid fa-plus" role="button" (click)="service.showService= !service.showService"></i>
+            </span>
+            <span class="float-right" *ngIf="service.showService">
+                <i class="fa-solid fa-minus" role="button" (click)="service.showService= !service.showService"></i>
+            </span>
+        </div>       
+    </div>
+    <div class="row mt-1" *ngIf="service.showService">
+        <div class="col-sm-6">
+            <div class="card h-100 shadow">
+                <img class="h-100" src="{{'assets/images/'+service.image }}" alt="">
+            </div>
+        </div>
+        <div class="col-sm-6 text-justify overflow-auto">{{ service.Description }}</div>
+    </div>    
+</div>
+

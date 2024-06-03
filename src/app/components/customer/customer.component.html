@@ -1,112 +1,21 @@
-<div class="row mt-5"></div>
-<div class="row mt-3">
-    <div class="col-sm-4">
-        <div class="card mb-2">
-            <div class="card-header bg-dark text-white">
-                Customer Details
-            </div>
-            <div class="card-body bg-info">
-                <h5 class="card-title">{{user.userName}}</h5>
-                <div class="card-text">Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{user.email}}</div>
-                <div class="card-text">Mobile:&nbsp;&nbsp;{{user.mobile}}</div>
-                <div class="card-text">Pincode: {{user.pinCode}}</div>
-            </div>
-        </div>
-        <div class="card mb-2">
-            <div class="card-header bg-dark text-white">
-                Customer's Service(s)
-            </div>
-            <div class="card-body bg-info">
-                <h5 class="card-title" *ngFor="let service of user.services">{{service.name}}</h5>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header bg-dark text-white">
-                Customer's Complaint(s)
-            </div>
-            <div class="card-body bg-info">
-                <div *ngFor="let complaint of complaints">
-                    <div *ngIf="complaint.status == 'RAISED'">
-                        {{complaint.referenceNo}}<span class="badge badge-pill badge-primary float-right">{{complaint.status}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top mt-auto">
+    <a class="navbar-brand" (click)="goHome()" role="button"><i class="fa-solid text-info fa-house"></i></a>
+    <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="my-nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink="detail">Customer's Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink="complaints">Complaint</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink="/custome-billing">Billing</a>
+            </li>
+        </ul>
     </div>
-    <div class="col-sm-8 mt-3 mb-5">
-        <div class="card">
-            <form #complaintForm="ngForm" (ngSubmit)="onSubmit(complaintForm.value)">
-                <div class="form-group">
-                    <label for="complaint">Complaint:</label>
-                    <textarea rows="6"  id="complaint" class="form-control" name="complaint" ngModel required></textarea>
-                </div>
-                <div class="form-check" *ngFor="let service of user.services">
-                    <label class="form-check-label">
-                      <input type="radio" class="form-check-input"  name="serviceId" [value]="service.serviceId" ngModel required>{{service.name}}
-                    </label>
-                  </div>
-                  <div class="form-group">
-                    <button class="btn btn-outline-info form-control" type="submit" [disabled]="complaintForm.invalid">Save Complaint</button>
-                  </div>
-            </form>
-        </div>
-        <table class="table table-light table-sm">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Complaint</th>
-                    <th>Created Date</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let complaint of complaints">
-                    <td>{{complaint.complaint}}</td>
-                    <td>{{complaint.cdate | date: 'dd-MM-yyyy'}}</td>
-                    <td [ngClass]="{
-                        'bg-warning' : complaint.status === 'ON_GOING',
-                        'bg-info' : complaint.status === 'RAISED',
-                        'bg-success' : complaint.status === 'RESOLVED',
-                        'bg-danger' : complaint.status === 'ESCALATED'
-                        }">{{complaint.status | titlecase}}</td>
-                    <td  *ngIf="complaint.status == 'RESOLVED' || complaint.status == 'ESCALATED'">
-                        <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#feedback" (click)="setComplaint(complaint)">
-                            Feedback
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- Modal -->
-    <div class="modal" id="feedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenteredLabel">Feedback Window</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="feedback">Feedback</label>
-                        <textarea id="feedback" class="form-control" name="" rows="3" [(ngModel)]="getFeedback"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary mb-2" (click)="feedback()">
-                        <div class="spinner-border spinner-border-sm" role="status" *ngIf="showSpinner else text">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </button>
-                    <ng-template #text>Save Feedback</ng-template>
-                    <div class="alert alert-success" role="alert" *ngIf="showMsg">
-                        You successfully save Feedback against Complaint!
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+</nav>
+<app-carousel></app-carousel>
+<router-outlet></router-outlet>

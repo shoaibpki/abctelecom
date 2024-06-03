@@ -33,7 +33,7 @@ export class UsermanageComponent implements OnInit {
   currentDate: Date = new Date();
 
   usersForm!: FormGroup;
-  user: User = {mobile: '',userName:'',id:0,email:'',password:'',role:'',joiningDate:new Date};
+  user: User = {} as User;
   htmlServices: Service[] = [];
   uService: Service[] = [];
   msg: string = "Successfully Save ";

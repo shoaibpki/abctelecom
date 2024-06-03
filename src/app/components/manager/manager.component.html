@@ -1,5 +1,12 @@
-<div class="container-fluid mb-5 mt-5" @fadeEffect>
-    <div class="row mt-5">
+<div class="m-auto" @fadeEffect>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top mt-auto">
+        <a class="navbar-brand" (click)="goHome()" role="button"><i class="fa-solid text-info fa-house"></i></a>
+        <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+    
+    <div class="row mt-2">
         <div class="col-sm-3 h-25 mt-3">
             <div class="card">
                 <div class="card-header">
@@ -24,7 +31,7 @@
                     Complaints Table...
                 </div>
                 <div class="card-body">
-                    <table class="table table-light">
+                    <table class="table table-light table-responsive">
                         <thead class="bg-secondary">
                             <tr>
                                 <th>#</th>

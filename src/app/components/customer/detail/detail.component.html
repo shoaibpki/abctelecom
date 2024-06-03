@@ -1,0 +1,79 @@
+<div class="row mt-3">
+    <div class="col-sm-6">
+        <div class="card shadow-lg mb-2">
+            <div class="card-header bg-info">
+                Customer Details
+            </div>
+            <div class="card-body">
+                <form [formGroup]="userForm" (ngSubmit)="onSaveUser()">
+                    <div class="form-group">
+                        <label for="username">User Name</label>
+                        <div class="input-group">
+                            <input id="username" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" formControlName="username">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" name="username" type="button" (click)="editField('username')"><i class="fa-solid fa-pencil"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <input id="password" class="form-control" type="password" name="" placeholder="" aria-label="" formControlName="password">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" (click)="editField('password')"><i class="fa-solid fa-pencil"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-group">
+                            <input id="email" class="form-control" type="text" placeholder="" aria-label="" formControlName="email">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" (click)="editField('email')"><i class="fa-solid fa-pencil"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile</label>
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="" placeholder="" aria-label="" formControlName="mobile">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" (click)="editField('mobile')">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pincode">Pincode</label>
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="" aria-label="" formControlName="pincode">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" (click)="editField('pincode')">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn form-control btn-success" type="submit">Save Information</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card mb-2">
+            <div class="card-header bg-dark text-white">
+                Customer's Service(s)
+            </div>
+            <div class="card-body bg-info">
+                <h5 class="card-title" *ngFor="let service of user.services">{{service.name}}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+

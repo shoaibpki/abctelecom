@@ -9,8 +9,9 @@
     /* background-image: linear-gradient(rgb(7, 7, 31), rgb(43, 43, 119)); */
 }
 .my-sidebar {
-    -ms-flex: 0 0 230px;
-    flex: 0 0 230px;
+    /* -ms-flex: 0 0 230px;
+    flex: 0 0 230px; */
+    height: 100%;
 } 
 
 @media (max-width: 690px) {

@@ -48,7 +48,7 @@ export const showServiceState = trigger('showService',[
 export const fadeEffectState = trigger('fadeEffect',[
     transition(':enter', [
         style({ opacity: 0}),
-        animate(300)
+        animate('300ms')
     ]),
     // transition(':leave', 
     //     animate(100, style({opacity: 0}))
@@ -99,3 +99,20 @@ export const modalEffectState = trigger('modalEffect', [
         animate(300)
     ])
 ]);
+
+export const serviceDetailState = trigger('serviceDetail',[
+    state('hidden', style({ height: '62px'})),
+    state('shown', style({ height: '400px'})),
+    transition('hidden => shown', animate(
+        '500ms ease-out',
+        keyframes([
+            style({ height: '400px'})
+        ])
+    )),
+    transition('shown => hidden', animate(
+        '500ms ease-in',
+        keyframes([
+            style({ height: '62px'})
+        ])
+    ))
+])

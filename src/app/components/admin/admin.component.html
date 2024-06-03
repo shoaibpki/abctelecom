@@ -1,62 +1,86 @@
-<div class="d-flex mt-5">
-  <div class="p-2 mt-3"  *ngIf="!showMenu">
-    <div class="card bg-menu" style="height: 463px;">
-      <div class="card-header text-light text-center"><span><i class="fa-solid fa-bars" (click)="toggleMenu()" role="button"> </i></span></div>
-      <div class="card-body">
-        <div class="mb-4 card-text text-center">
-          <i class="btn fa-solid fa-gauge text-light" routerLink="dashboard"></i>
-        </div><hr>
-        <div class="mb-4 card-text text-center">
-          <i class="btn fa-solid fa-person-military-pointing text-light" (click)="setRoleCustomer()" routerLink="manage/users"></i>
-        </div><hr>
-        <div class="mb-4 card-text text-center">
-          <i class="btn fa-solid fa-people-roof text-light" (click)="setRoleManager()" routerLink="manage/users"></i>
-        </div><hr>
-        <div class="mb-4 card-text text-center">
-          <i class="btn fa-solid fa-wrench text-light" (click)="setRoleEngineer()" routerLink="manage/users"></i>
-        </div><hr>
-        <div class="mb-0 card-text text-center">
-          <i class="btn fa-solid fa-fax text-light" routerLink="manage/services"></i>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top mt-auto">
+    <a class="navbar-brand" (click)="goHome()" role="button"><i class="fa-solid text-info fa-house"></i></a>
+    <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+  <div id="my-nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink="dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink="manage/customers">Customers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink="manage/managers">Mangers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink="manage/engineers">Engineers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" routerLink="manage/services">Services</a>
+            </li>
+        </ul>
+  </div>
+  </nav>
+  <div class="row">
+    <div class="my-sidebar col-sm-2 bg-dark position-fixed">
+        <div class="card mt-4 bg-dark border-0">
+          <!-- <div class="card-header text-light"><span class="float-right"><i class="fa-solid fa-bars" (click)="toggleMenu()" role="button"></i></span></div>
+          <div class="card-header">
+            <span  class="text-info">
+              <i>{{admin.userName }}</i>
+            </span>
+            <span class="badge badge-pill badge-info float-right text-secondary"> {{admin.role}} </span>
+          </div> -->
+          <div class="card-body text-info">
+            <p class="card-text pb-4">
+              <i class="fa-solid fa-gauge mr-3"></i>
+              <a (click)="setRoleCustomer()" class="text-info" routerLink="dashboard" role="button">Dashboard</a>
+            </p> 
+            <p class="card-text pb-4">
+              <i class="mr-3 fa-solid fa-person-military-pointing"></i>
+              <a (click)="setRoleCustomer()" class="text-info" role="button" routerLink="manage/customers">Customers</a>
+            </p>
+            <p class="card-text pb-4">
+              <i class="mr-3 fa-solid fa-people-roof"></i>
+              <a (click)="setRoleManager()" class="text-info" role="button" routerLink="manage/managers">Managers</a>
+            </p>
+            <p class="card-text pb-4">
+              <i class="mr-3 fa-solid fa-wrench"></i>
+              <a (click)="setRoleEngineer()" role="button" class="text-info" routerLink="manage/engineers">Engineers</a>
+            </p>
+            <p class="card-text">
+              <i class="mr-3 fa-solid fa-fax"></i>
+              <a class="text-info" role="button" routerLink="manage/services">Services</a>
+            </p>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm-10 mt-5 ml-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>  
+
+    <!-- <div class="p-2 mt-3"  *ngIf="!showMenu">
+      <div class="card bg-menu" style="height: 463px;">
+        <div class="card-header text-light text-center"><span><i class="fa-solid fa-bars" (click)="toggleMenu()" role="button"> </i></span></div>
+        <div class="card-body">
+          <div class="mb-4 card-text text-center">
+            <i class="btn fa-solid fa-gauge text-light" routerLink="dashboard"></i>
+          </div><hr>
+          <div class="mb-4 card-text text-center">
+            <i class="btn fa-solid fa-person-military-pointing text-light" (click)="setRoleCustomer()" routerLink="manage/users"></i>
+          </div><hr>
+          <div class="mb-4 card-text text-center">
+            <i class="btn fa-solid fa-people-roof text-light" (click)="setRoleManager()" routerLink="manage/users"></i>
+          </div><hr>
+          <div class="mb-4 card-text text-center">
+            <i class="btn fa-solid fa-wrench text-light" (click)="setRoleEngineer()" routerLink="manage/users"></i>
+          </div><hr>
+          <div class="mb-0 card-text text-center">
+            <i class="btn fa-solid fa-fax text-light" routerLink="manage/services"></i>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="p-2 mt-3 my-sidebar" *ngIf="showMenu">
-    <div class="card bg-menu">
-      <div class="card-header text-light"><span class="float-right"><i class="fa-solid fa-bars" (click)="toggleMenu()" role="button"></i></span></div>
-      <div class="card-header">
-        <span  class="text-info">
-          <i>{{admin.userName }}</i>
-        </span>
-        <span class="badge badge-pill badge-info float-right text-secondary"> {{admin.role}} </span>
-      </div>
-      <div class="card-body">
-        <p class="card-text">
-          <i class="fa-solid fa-gauge"></i>
-          <a (click)="setRoleCustomer()" class="text-light ml-4" routerLink="dashboard" role="button">Dashboard</a>
-        </p> <hr>
-        <p class="card-text">
-          <i class="fa-solid fa-person-military-pointing"></i>
-          <a (click)="setRoleCustomer()" class="text-light ml-4" role="button" routerLink="manage/customers">Customers</a>
-        </p> <hr>
-        <p class="card-text">
-          <i class="fa-solid fa-people-roof"></i>
-          <a (click)="setRoleManager()" class="text-light ml-4" role="button" routerLink="manage/managers">Managers</a>
-        </p> <hr>
-        <p class="card-text">
-          <i class="fa-solid fa-wrench"></i>
-          <a (click)="setRoleEngineer()" role="button" class="text-light ml-4" routerLink="manage/engineers">Engineers</a>
-        </p> <hr>
-        <p class="card-text">
-          <i class="fa-solid fa-fax"></i>
-          <a class="text-light ml-4" role="button" routerLink="manage/services">Services</a>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="p-2 mt-3">
-    <router-outlet></router-outlet>
-  </div>
-</div>
-
-  
+    </div> -->

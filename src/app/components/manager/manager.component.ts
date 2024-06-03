@@ -4,6 +4,7 @@ import { User } from 'src/app/interface/user';
 import { ComplaintService } from 'src/app/service/complaint.service';
 import { UserService } from 'src/app/service/user.service';
 import { fadeEffectState, modalEffectState, selectRecordState } from 'src/app/animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manager',
@@ -31,14 +32,15 @@ export class ManagerComponent implements OnInit {
   complaintDetail: Complaint = {complaint: '', status: '', service: {name: '',serviceId: 0}, cdate: new Date(), jdate: new Date()};
   complaintId: number = 0;
   spinId: number = 0;
-  customer: User = {userName: '', email: '', mobile: '', id: 0, password: '', role: '',joiningDate: new Date()};
+  customer: User = {} as User;
   showMsg: boolean = false;
   $key: string = '';
   showModal: boolean = false; 
 
   constructor(
     private userService: UserService,
-    private complaintsService: ComplaintService
+    private complaintsService: ComplaintService,
+    private router: Router
     ){}
 
   ngOnInit(){
@@ -81,11 +83,12 @@ export class ManagerComponent implements OnInit {
   }
 
   selectStatus(value: string){
-      if (value == 'ALL'){
-        this.filterComplaints = this.allComplaints;
-      }else {
-        this.filterComplaints = this.allComplaints.filter((c) => c.status === value);
-      }
+
+    if (value == 'ALL'){
+      this.filterComplaints = this.allComplaints;
+    }else {
+      this.filterComplaints = this.allComplaints.filter((c) => c.status === value);
+    }
   }
 
   showEngineer(complaint: Complaint){
@@ -113,6 +116,12 @@ export class ManagerComponent implements OnInit {
     this.showModal = false;
     this.showSpiner = false;
     this.showMsg = false;
+  }
+
+  goHome(){
+    setTimeout(() => {
+      this.router.navigate([''])      
+    }, 1000);
   }
 
 }

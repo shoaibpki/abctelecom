@@ -55,6 +55,7 @@ export class ComplaintService {
   }
 
   getFirebaseComplaints(){
+    this._complaints = [];
     let db = getDatabase();
     let uRef = ref(db, 'complaints');
     onValue(uRef, (snapshot) => {

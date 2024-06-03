@@ -20,7 +20,9 @@ export class AdminComponent implements OnInit {
   constructor(
     private route: Router,
     private userService: UserService,
-    private services: ServicesService){}
+    private services: ServicesService,
+    private router: Router
+  ){}
 
   ngOnInit(): void {
     this.admin = this.userService.getAdmin();
@@ -36,5 +38,8 @@ export class AdminComponent implements OnInit {
   }
   toggleMenu(){
     this.showMenu = !this.showMenu;        
+  }
+  goHome(){
+    this.router.navigate(['']);
   }
 }

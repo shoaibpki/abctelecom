@@ -14,7 +14,13 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServicesComponent } from './components/services/services.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SignupComponent } from './components/signup/signup.component'
+import { SignupComponent } from './components/signup/signup.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
+import { HeaderComponent } from './components/header/header.component';
+import { AboutComponent } from './components/about/about.component';
+import { ShowServicesComponent } from './components/show-services/show-services.component';
+import { ComplaintsComponent } from './components/customer/complaints/complaints.component';
+import { DetailComponent } from './components/customer/detail/detail.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +33,13 @@ import { SignupComponent } from './components/signup/signup.component'
     LogoutComponent,
     ServicesComponent,
     DashboardComponent,
-    SignupComponent
+    SignupComponent,
+    CarouselComponent,
+    HeaderComponent,
+    AboutComponent,
+    ShowServicesComponent,
+    ComplaintsComponent,
+    DetailComponent
   ],
   imports: [
     BrowserModule,

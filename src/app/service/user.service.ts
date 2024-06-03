@@ -1,7 +1,7 @@
 import  * as _  from 'underscore';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, filter, observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from '../interface/user';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { get, getDatabase, increment, onChildAdded, onValue, push,  query,  ref, set } from 'firebase/database'
@@ -12,31 +12,24 @@ export class UserService {
 
   private _isLogin: boolean = false;
   private users: User[] = []; 
-  private _admin: User = {
-    role: '',
-    userName: '',
-    email: '',
-    password: '',
-    id: 0,
-    joiningDate: new Date,
-    mobile: ''
-  }; 
-  private _rootUrl = 'http://localhost:8082/abctelecom/users'
+  private _admin: User = {} as User;
+  private _rootUrl = 'http://localhost:8082/abctelecom'
   private _role: string = '';
-  // private userList: AngularFireList<User>;
+  private _password = '';
 
   constructor(private http: HttpClient ) {}
 
-  
   public set isLogin(v : boolean) {
     this._isLogin = v;
   }
 
-  
   public get isLogin() : boolean {
     return this._isLogin;
   }
   
+  public set password(pass: string){
+    this._password = pass;
+  }
   
   public setAdmin(v : User) {
     this._admin = v;
@@ -56,9 +49,7 @@ export class UserService {
   public get getRole() : string {
     return this._role
   }
-  
-  
-  
+   
   createUser(user: User) : Observable<any>{
     return this.http.post(`${this._rootUrl}`, user)
   }
@@ -70,26 +61,38 @@ export class UserService {
     return this.users;
   }
 
-  login(email: string, pass: string) : Observable<User>{   
+  login(email: string) : Observable<User>{   
     let params = new HttpParams()
       .set('email',email)
-      .set('password', pass)
+      .set('password', this._password)
     return this.http.get<User>(`${this._rootUrl}/login`, { params })
   }
 
-  getHttpUsers() : Observable<User[]> {
-    return this.http.get<User[]>(`${this._rootUrl}`);
+  getHttpUsers(email: string) : Observable<User[]> {
+    let headers = new HttpHeaders({ 
+      authorization: 'Basic ' +btoa(email + ':' + this._password)
+
+     });
+    return this.http.get<User[]>(
+      `${this._rootUrl}/users`,
+      { headers: headers}
+    );
   }
   
   updateUser(id: number, user: User) : Observable<User> {
+    let headers = new HttpHeaders({ 
+      authorization: 'Basic ' +btoa(this._admin.email + ':' + this._password)
+
+     });
     return this.http.put<User>(`${this._rootUrl}/${id}`, user)
   }
 
   deleteUser(id: number): Observable<string>{
-    let header = new HttpHeaders({
-      'Content-Type' : 'application/text'
-    });
-    return this.http.delete<string>(`${this._rootUrl}/${id}`,{headers: header})
+    let headers = new HttpHeaders({ 
+      authorization: 'Basic ' +btoa(this._admin.email + ':' + this._password)
+
+     });
+    return this.http.delete<string>(`${this._rootUrl}/${id}`,{headers: headers})
 
   }
 
@@ -123,6 +126,7 @@ export class UserService {
   }
 
   getFireBaseUsers() {
+    this.users = [];
     let db = getDatabase();
     let uRef = ref(db, 'users');
     onValue(uRef, (snapshot) => {
@@ -145,13 +149,12 @@ export class UserService {
     // let serviceRef = ref(db,`users-services/${user.id}`);
   }
 
- // updateFirebaseUser(user: User){
-  //   let key = user.$key!;
-  //   this.userList.update(key, user);
-  // }
-  // deleteFirebaseUser(key: string){
-  //   this.userList.remove(key);
-  // }
+  updateFirebaseUser(user: User){
+    let db = getDatabase();
+    let uRef = ref(db, `users/${user.id}`)
+    set(uRef, user);
+  }
+
   
 }
 
